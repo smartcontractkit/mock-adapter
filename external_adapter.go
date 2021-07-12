@@ -48,6 +48,12 @@ func main() {
 // index allows a status check on the adapter
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	fmt.Fprint(w, "Adapter listening!")
+	result := &ExternalAdapterResponse{
+		JobRunId: "",
+		Data:     ExternalAdapterData{Result: 0},
+		Error:    nil,
+	}
+	_ = json.NewEncoder(w).Encode(result)
 }
 
 // RandomNumber returns a random int from 0 to 100
