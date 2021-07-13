@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
@@ -34,6 +36,8 @@ var variableData int
 
 // starts an external adapter on specified port
 func main() {
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+
 	router := httprouter.New()
 	router.GET("/", index)
 	router.GET("/random", randomNumber)
@@ -53,6 +57,7 @@ func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		Data:     ExternalAdapterData{Result: 0},
 		Error:    nil,
 	}
+	log.Info().Str("Endpoint", "/").Msg("Index")
 	_ = json.NewEncoder(w).Encode(result)
 }
 
@@ -65,6 +70,7 @@ func randomNumber(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		Data:     ExternalAdapterData{Result: num},
 		Error:    nil,
 	}
+	log.Info().Str("Endpoint", "/random").Int("Result", num).Msg("Random Number")
 	_ = json.NewEncoder(w).Encode(result)
 }
 
@@ -76,6 +82,7 @@ func five(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		Data:     ExternalAdapterData{Result: 5},
 		Error:    nil,
 	}
+	log.Info().Str("Endpoint", "/five").Int("Result", 5).Msg("Five")
 	_ = json.NewEncoder(w).Encode(result)
 }
 
@@ -87,6 +94,7 @@ func setVariable(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	variableData = data
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	result := &OkResult{}
+	log.Info().Str("Endpoint", "/set_variable").Int("Variable", variableData).Msg("Set Variable")
 	_ = json.NewEncoder(w).Encode(result)
 }
 
@@ -98,5 +106,6 @@ func variable(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		Data:     ExternalAdapterData{Result: variableData},
 		Error:    nil,
 	}
+	log.Info().Str("Endpoint", "/variable").Int("Variable", variableData).Msg("Get Variable")
 	_ = json.NewEncoder(w).Encode(result)
 }
