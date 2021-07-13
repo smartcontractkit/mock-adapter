@@ -10,4 +10,4 @@ RUN chmod +x ./main
 
 EXPOSE 6060
 
-ENTRYPOINT ["./app/main"]
+ENTRYPOINT ["/app/main"]
