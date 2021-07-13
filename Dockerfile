@@ -1,7 +1,13 @@
-FROM alpine:3.14
+FROM golang:1.16
 
-COPY ./dummy-external-adapter /usr/local/bin/dummy-external-adapter
-RUN chmod +x /usr/local/bin/dummy-external-adapter
+RUN mkdir /app
+ADD . /app
+WORKDIR /app
+
+RUN go mod download
+RUN go build -o main .
+RUN chmod +x ./main
+
 EXPOSE 6060
 
-ENTRYPOINT ["./usr/local/bin/dummy-external-adapter"]
+ENTRYPOINT ["./app/main"]
