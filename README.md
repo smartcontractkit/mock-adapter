@@ -8,8 +8,8 @@ Default Port: `6060`
 
 | Method | Endpoint                       | Description                                       |
 | ------ | ------------------------------ | ------------------------------------------------- |
-| GET    | /                              | Basic "is running" check                          |
-| GET    | /random                        | Returns a random int ranging from 0 to 100        |
-| GET    | /five                          | Returns 5                                         |
+| GET/POST    | /                              | Basic "is running" check                          |
+| GET/POST    | /random                        | Returns a random int ranging from 0 to 100        |
+| GET/POST    | /five                          | Returns 5                                         |
 | POST   | /set_variable?var={your-value} | Allows you to set an integer to be later returned |
-| GET    | /variable                      | Returns whatever integer you set                  |
+| GET/POST    | /variable                      | Returns whatever integer you set                  |

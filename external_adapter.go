@@ -43,6 +43,10 @@ func main() {
 	router.GET("/random", randomNumber)
 	router.GET("/five", five)
 	router.GET("/variable", variable)
+	router.POST("/", index)
+	router.POST("/random", randomNumber)
+	router.POST("/five", five)
+	router.POST("/variable", variable)
 	router.POST("/set_variable", setVariable)
 
 	log.Info().Str("Port", adapterPort).Msg("Starting external adapter")
