@@ -46,6 +46,7 @@ func main() {
 	router.GET("/random", randomNumber)
 	router.GET("/five", five)
 	router.GET("/variable", variable)
+	router.GET("/json_variable", jsonVariable)
 	router.POST("/", index)
 	router.POST("/random", randomNumber)
 	router.POST("/five", five)
