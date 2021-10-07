@@ -142,7 +142,7 @@ func setJsonVariable(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 
 	jsonVariableData = body
 
-	log.Info().Msg("new json body received")
+	log.Info().Msg("New json body received")
 	w.Header().Set("Content-Type", jsonHeader)
 	log.Info().Str("Endpoint", "/set_json_variable").Msg("Set Variable")
 	fmt.Fprint(w, string(jsonVariableData))
