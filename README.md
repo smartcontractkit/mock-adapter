@@ -13,3 +13,5 @@ Default Port: `6060`
 | GET/POST    | /five                          | Returns 5                                         |
 | POST   | /set_variable?var={your-value} | Allows you to set an integer to be later returned |
 | GET/POST    | /variable                      | Returns whatever integer you set                  |
+| POST   | /set_json_variable | Allows you to set a json body to be returned later |
+| POST   | /json_variable | returns whatever json you set |
