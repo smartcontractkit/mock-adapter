@@ -1,0 +1,35 @@
+name: Publish image to ECR
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag number
+        required: true
+        type: string
+
+jobs:
+  build_push_image:
+    steps:
+      - name: Check if image exists
+        id: check-image
+        uses: smartcontractkit/chainlink-github-actions/docker/image-exists@336617ae6d70fec60c15cc3382e17a4d2615a801
+        with:
+          repository: mock-adapter
+          tag: ${{ github.event.inputs.tag }}
+          AWS_REGION: ${{ secrets.QA_AWS_REGION }}
+          AWS_ROLE_TO_ASSUME: ${{ secrets.QA_AWS_ROLE_TO_ASSUME }}
+
+      - name: Build and Publish mock adapter
+        if: steps.check-image.outputs.exists == 'false'
+        uses: smartcontractkit/chainlink-github-actions/docker/build-push@336617ae6d70fec60c15cc3382e17a4d2615a801
+        with:
+          tags: |
+            ${{ secrets.QA_AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ github.event.inputs.qa_aws_region }}.amazonaws.com/qa-mock-adapter:${{ github.event.inputs.tag }}
+          file: ./Dockerfile
+          AWS_REGION: ${{ secrets.QA_AWS_REGION }}
+          AWS_ROLE_TO_ASSUME: ${{ secrets.QA_AWS_ROLE_TO_ASSUME }}
+      - name: Print Image Built
+        shell: sh
+        run: |
+          echo "### Published image to ECR :ship:" >>$GITHUB_STEP_SUMMARY
+          echo "\`${{ github.event.inputs.tag }}\`" >>$GITHUB_STEP_SUMMARY
