@@ -29,7 +29,6 @@ type ExternalAdapterData struct {
 	Result int `json:"result"`
 }
 
-const adapterPort = ":6060"
 const jsonHeader = "application/json; charset=UTF-8"
 
 type OkResult struct{}
@@ -40,6 +39,11 @@ var jsonVariableData []byte
 // starts an external adapter on specified port
 func main() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+
+	adapterAddress := ":6060"
+	if len(os.Args) > 1 {
+		adapterAddress = os.Args[1]
+	}
 
 	router := httprouter.New()
 	router.GET("/", index)
@@ -55,8 +59,8 @@ func main() {
 	router.POST("/json_variable", jsonVariable)
 	router.POST("/set_json_variable", setJsonVariable)
 
-	log.Info().Str("Port", adapterPort).Msg("Starting external adapter")
-	log.Fatal().AnErr("Error", http.ListenAndServe(adapterPort, router)).Msg("Error occured while running external adapter")
+	log.Info().Str("Address", adapterAddress).Msg("Starting external adapter")
+	log.Fatal().AnErr("Error", http.ListenAndServe(adapterAddress, router)).Msg("Error occured while running external adapter")
 }
 
 // index allows a status check on the adapter
